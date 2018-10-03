@@ -46,7 +46,7 @@ module.exports = merge(common, {
     }),
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../static/favicon.ico'),
+        from: path.resolve(__dirname, 'static/favicon.ico'),
         to: config.dev.outputStaticPath,
         ignore: ['.*'],
       },
