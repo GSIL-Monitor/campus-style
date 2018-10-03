@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import  Layout from '../component/Layout/index.jsx';
 import './style.css';
+import { names } from './mock.js';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -22,15 +23,54 @@ class Create extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
     };
   }
+
+  componentDidMount() {
+  }
+
+  getCurrentYear = () => {
+    const year = new Date().getFullYear();
+    return year;
+  }
+
+  getYears = () => {
+    const currentYear = this.getCurrentYear();
+    const years = [currentYear - 1, currentYear, currentYear + 1];
+    return years;
+  }
+
+  onNameChange = (value) => {
+    this.props.form.setFieldsValue({ name: value });
+
+  }
+
+  onYearChange = (value) => {
+    this.props.form.setFieldsValue({ year: value });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, fieldsValue) => {
+      if (!err) {
+        const params = {
+          ...fieldsValue,
+          startTime: fieldsValue.startTime.format('YYYY-MM-DD'),
+          endTime: fieldsValue.endTime.format('YYYY-MM-DD'),
+        };
+        console.log('params-->', params);
+      }
+    });
+  }
+
   render() {
+    const { getFieldDecorator } = this.props.form;
+    const years = this.getYears();
     return (
       <Layout>
         <div className="create-form">
           <p className="create-form-title">填写内推通告表单</p>
-          <Form>
+          <Form onSubmit={this.handleSubmit}>
             <FormItem
               {...formItemLayout}
               label="公司名称"
@@ -38,24 +78,29 @@ class Create extends Component {
               // help="Should be combination of numbers & alphabets"
             >
               <Col span={11}>
-                <Select
-                  value="ali"
-                  onclick={this.onNameChange}
-                >
-                  <Option value="ali">
-                 阿里巴巴
-                  </Option>
-                  <Option value="tencent">
-                 腾讯
-                  </Option>
-                  <Option value="baidu">
-                 百度
-                  </Option>
-                </Select>
+                {getFieldDecorator('name', {
+                  rules: [{
+                    required: true, message: '请输入公司内推码!',
+                  }],
+                })(
+                  <Select
+                    onChange={this.onNameChange}
+                  >
+                    {names.map((item) => {
+                      const { key, value } = item;
+                      return (<Option key={value} value={value}>
+                        {key}
+                      </Option>);
+                    })}
+                  </Select>)}
               </Col>
               <Col span={2} style={{ textAlign: 'center' }} />
               <Col span={11}>
-                <Input placeholder="请输入公司部门" />
+                {getFieldDecorator('subname', {
+                  rules: [{
+                    required: false, message: '请输入公司内推码!',
+                  }],
+                })(<Input placeholder="请输入公司部门" />)}
               </Col>
             </FormItem>
 
@@ -64,9 +109,11 @@ class Create extends Component {
               {...formItemLayout}
             >
               <Col span={11}>
-                <FormItem>
-                  <DatePicker style={{ width: '100%' }} />
-                </FormItem>
+                {getFieldDecorator('startTime', {
+                  rules: [{
+                    required: true, message: '请输入开始时间!',
+                  }],
+                })(<DatePicker style={{ width: '100%' }} />)}
               </Col>
               <Col span={2}>
                 <span style={{ display: 'inline-block', width: '100%', textAlign: 'center' }}>
@@ -74,9 +121,11 @@ class Create extends Component {
                 </span>
               </Col>
               <Col span={11}>
-                <FormItem>
-                  <DatePicker style={{ width: '100%' }} />
-                </FormItem>
+                {getFieldDecorator('endTime', {
+                  rules: [{
+                    required: true, message: '请输入结束时间!',
+                  }],
+                })(<DatePicker style={{ width: '100%' }} />)}
               </Col>
             </FormItem>
 
@@ -85,20 +134,21 @@ class Create extends Component {
               label="毕业年份:"
             >
               <Col span={22}>
-                <Select
-                  value="2017"
-                  onclick={this.onNameChange}
-                >
-                  <Option value="ali">
-                 2017
-                  </Option>
-                  <Option value="2018">
-                 2018
-                  </Option>
-                  <Option value="2019">
-                 2019
-                  </Option>
-                </Select>
+                {getFieldDecorator('year', {
+                  initialValue: this.getCurrentYear(),
+                  rules: [{
+                    required: true, message: '请选择毕业年份!',
+                  }],
+                })(
+                  <Select
+                    onChange={this.onYearChange}
+                  >
+                    {years.map(value =>
+                      (<Option key={value} value={value}>
+                        {value}
+                      </Option>),
+                    )}
+                  </Select>)}
               </Col>
               <Col span={2}>
                 <span style={{ display: 'inline-block', width: '100%', textAlign: 'center' }}>届</span>
@@ -109,7 +159,11 @@ class Create extends Component {
               {...formItemLayout}
               label="内推码:"
             >
-              <Input placeholder="请输入内推码" />
+              {getFieldDecorator('code', {
+                rules: [{
+                  required: true, message: '请输入公司内推码!',
+                }],
+              })(<Input placeholder="请输入内推码" />)}
             </FormItem>
 
             <FormItem
@@ -122,9 +176,15 @@ class Create extends Component {
             <FormItem
               {...formItemLayout}
               label="简历接收邮箱"
-              help="填写公司邮箱增加可信度"
             >
-              <Input placeholder="请填写公司邮箱" />
+              {getFieldDecorator('email', {
+                rules: [{
+                  type: 'email', message: '请输入合法的邮箱地址!',
+                }, {
+                  required: true, message: '填写公司邮箱!',
+                }],
+              })(<Input placeholder="请填写公司邮箱" />)
+              }
             </FormItem>
 
             <FormItem
@@ -136,7 +196,7 @@ class Create extends Component {
             <FormItem
               wrapperCol={{ span: 12, offset: 5 }}
             >
-              <Col span={8} />
+              <Col span={10} />
               <Col span={6}>
                 <Button type="primary" htmlType="reset">
                  重置
@@ -147,7 +207,7 @@ class Create extends Component {
                  提交
                 </Button>
               </Col>
-              <Col span={4} />
+              <Col span={2} />
 
             </FormItem>
           </Form>
@@ -157,4 +217,4 @@ class Create extends Component {
   }
 }
 
-export default Create;
+export default Form.create()(Create);
