@@ -6,14 +6,7 @@ class AppProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeNav: ['home'],
     };
-  }
-
-  toggleActiveNav = (value) => {
-    this.setState({
-      activeNav: [value],
-    });
   }
 
   render() {
@@ -21,7 +14,6 @@ class AppProvider extends Component {
       <AppContext.Provider
         value={{
           ...this.state,
-          toggleActiveNav: this.toggleActiveNav,
         }}
       >
         {this.props.children}

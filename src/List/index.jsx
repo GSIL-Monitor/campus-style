@@ -10,7 +10,7 @@ class List extends Component {
   }
   render() {
     return (
-      <Layout>
+      <Layout activeNav={['list']}>
         List
       </Layout>
     );

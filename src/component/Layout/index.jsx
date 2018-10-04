@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Layout } from 'antd';
 import  Header from '../Header/index.jsx';
 import  Footer from '../Footer/index.jsx';
@@ -16,7 +17,7 @@ class WebLayout extends Component {
   render() {
     return (
       <Layout>
-        <Header>Header</Header>
+        <Header activeNav={this.props.activeNav}>Header</Header>
         <Content>
           {this.props.children}
         </Content>
@@ -25,6 +26,9 @@ class WebLayout extends Component {
     );
   }
 }
+WebLayout.propTypes = {
+  activeNav: PropTypes.array,
+};
 
 export default WebLayout;
 

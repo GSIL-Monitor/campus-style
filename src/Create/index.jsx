@@ -69,7 +69,7 @@ class Create extends Component {
     const { getFieldDecorator } = this.props.form;
     const years = this.getYears();
     return (
-      <Layout>
+      <Layout activeNav={['create']}>
         <div className="create-form">
           <p className="create-form-title">填写内推通告表单</p>
           <Form onSubmit={this.handleSubmit}>

@@ -10,7 +10,7 @@ class Home extends Component {
   }
   render() {
     return (
-      <Layout>
+      <Layout activeNav={['home']}>
         Home
       </Layout>
     );
