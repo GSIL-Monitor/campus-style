@@ -5,6 +5,7 @@ import {
 import  Layout from '../component/Layout/index.jsx';
 import './style.css';
 import { names } from './mock.js';
+import AppContext from '../context';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -27,6 +28,7 @@ class Create extends Component {
   }
 
   componentDidMount() {
+    console.log('this.props-->', this.props);
   }
 
   getCurrentYear = () => {
