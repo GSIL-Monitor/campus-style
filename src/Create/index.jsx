@@ -98,11 +98,11 @@ class Create extends Component {
               </Col>
               <Col span={2} style={{ textAlign: 'center' }} />
               <Col span={11}>
-                {getFieldDecorator('subname', {
+                {getFieldDecorator('subName', {
                   rules: [{
                     required: false, message: '请输入公司内推码!',
                   }],
-                })(<Input placeholder="请输入公司部门" />)}
+                })(<Input placeholder="请输入公司部门(选填)" />)}
               </Col>
             </FormItem>
 
@@ -172,7 +172,11 @@ class Create extends Component {
               {...formItemLayout}
               label="工作要求:"
             >
-              <TextArea rows={6} />
+              {getFieldDecorator('requirement', {
+                rules: [{
+                  required: false, message: '请输入工作要求!',
+                }],
+              })(<TextArea rows={6} placeholder="请输入工作要求" />)}
             </FormItem>
 
             <FormItem
@@ -193,7 +197,11 @@ class Create extends Component {
               {...formItemLayout}
               label="备注:"
             >
-              <TextArea rows={6} />
+              {getFieldDecorator('remark', {
+                rules: [{
+                  required: false, message: '请输入备注!',
+                }],
+              })(<TextArea rows={6} placeholder="备注" />)}
             </FormItem>
             <FormItem
               wrapperCol={{ span: 12, offset: 5 }}
