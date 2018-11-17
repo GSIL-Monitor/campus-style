@@ -10,7 +10,6 @@ module.exports = {
     alias: {
       src: resolve('src'),
       stores: resolve('src/stores'),
-      components: resolve('src/components'),
     },
   },
   module: {
