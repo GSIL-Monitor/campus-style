@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import {
-  Form, Input, DatePicker, TimePicker, InputNumber, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete,
+  Form, Input, DatePicker, message, Select, Col, Button,
 } from 'antd';
-import  Layout from '../component/Layout/index.jsx';
+import { createFromApi } from 'src/api';
+import  Layout from 'src/component/Layout/index.jsx';
 import './style.css';
+import AppContext from 'src/context';
 import { names } from './mock.js';
-import AppContext from '../context';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -61,7 +62,16 @@ class Create extends Component {
           endTime: fieldsValue.endTime.format('YYYY-MM-DD'),
         };
         console.log('params-->', params);
+
       }
+    });
+  }
+
+  createFrom = (params) => {
+    createFromApi(params).then((data) => {
+      message.success('创建成功!');
+    }).catch((error) => {
+
     });
   }
 

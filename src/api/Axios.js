@@ -16,8 +16,13 @@ axiosInstance.interceptors.request.use(config => config, error => Promise.reject
 
 // response拦截器
 axiosInstance.interceptors.response.use((response) => {
-  const { data } = response;
-  return data;
+  const { data: body } = response;
+  const { data, msg, code } = body;
+  if (code === 0) {
+    return data;
+  }
+  message.error(`访问出错${msg}`, 3);
+  Promise.reject(msg);
 }, (error) => {
   if (error && error.response) {
     const { status, statusText } = error.response;
